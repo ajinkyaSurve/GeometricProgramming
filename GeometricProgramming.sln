@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricProgramming.Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricProgramming.Common", "GeometricProgramming.Common\GeometricProgramming.Common.csproj", "{A5BD65BC-D302-458F-8D82-016BFDD2D0AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricProgramming.xUnitTests", "GeometricProgramming.xUnitTests\GeometricProgramming.xUnitTests.csproj", "{A963692B-6FA1-47D1-B156-9C61464C6C66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricProgramming.xUnitTests", "GeometricProgramming.xUnitTests\GeometricProgramming.xUnitTests.csproj", "{A963692B-6FA1-47D1-B156-9C61464C6C66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricProgramming.ConsumerAPI", "GeometricProgramming.ConsumerAPI\GeometricProgramming.ConsumerAPI.csproj", "{9575B174-E202-4385-BE0D-D012873D7643}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A963692B-6FA1-47D1-B156-9C61464C6C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A963692B-6FA1-47D1-B156-9C61464C6C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A963692B-6FA1-47D1-B156-9C61464C6C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9575B174-E202-4385-BE0D-D012873D7643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9575B174-E202-4385-BE0D-D012873D7643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9575B174-E202-4385-BE0D-D012873D7643}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9575B174-E202-4385-BE0D-D012873D7643}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

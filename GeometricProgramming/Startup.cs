@@ -7,6 +7,12 @@
     using Microsoft.Extensions.DependencyInjection;
     using GeometricProgramming.Services.Abstract;
     using GeometricProgramming.Services.Concrete;
+    using Steeltoe.Messaging.RabbitMQ.Extensions;
+    using Steeltoe.Messaging.RabbitMQ.Config;
+    using GeometricProgramming.Common;
+    using Steeltoe.Messaging.RabbitMQ.Connection;
+    using Steeltoe.Messaging.RabbitMQ.Core;
+    using RestSharp;
 
     public class Startup
     {
@@ -27,9 +33,27 @@
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSingleton<IRestClient>(new RestClient(Configuration.GetSection("ConsumerUrl").Value));
+
+            // Add singleton that will process incoming messages
+            services.AddSingleton<RabbitListener>();
+
+            // Tell steeltoe about singleton so it can wire up queues with methods to process queues (i.e. RabbitListenerAttribute)
+            services.AddRabbitListeners<RabbitListener>();
+
+            var connectionFactory = new CachingConnectionFactory()
+            {
+                Host = Configuration.GetSection("Spring:RabbitMq").GetValue("Host", string.Empty),
+                Port = Configuration.GetSection("Spring:RabbitMq").GetValue("Port", 5672),
+                Password = Configuration.GetSection("Spring:RabbitMq").GetValue("Username", string.Empty),
+                Username = Configuration.GetSection("Spring:RabbitMq").GetValue("Password", string.Empty)
+            };
+            var admin = new RabbitAdmin(connectionFactory);
+            admin.DeclareQueue(new Queue("Geometry.Inputs"));
+
             services.AddControllers();
             services.AddMvc(options => options.EnableEndpointRouting = false);
-            services.AddSingleton<IPrintService, PrintService>();
+            services.AddSingleton<IPrintService>(new PrintService(new RabbitTemplate(connectionFactory)));
             services.AddSwaggerGen();
         }
 

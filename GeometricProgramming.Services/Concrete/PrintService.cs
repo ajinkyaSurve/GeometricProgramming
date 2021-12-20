@@ -6,13 +6,21 @@
     using System.Drawing.Imaging;
     using System.IO;
     using System.Text.Json;
-    using System.Text.RegularExpressions;
     using GeometricProgramming.Common.Models;
     using GeometricProgramming.Models;
     using GeometricProgramming.Services.Abstract;
+    using Steeltoe.Messaging.RabbitMQ.Core;
 
     public class PrintService : IPrintService
     {
+        private readonly RabbitTemplate _rabbitTemplate;
+
+        public PrintService(RabbitTemplate rabbitTemplate)
+        {
+            _rabbitTemplate = rabbitTemplate;
+
+        }
+
         public PrintResults PlotAllTriangles(ImagingDto image)
         {
             if (image.IsInvalidImage)
@@ -24,6 +32,8 @@
             {
                 throw new ArgumentException("Invalid Triangle coordinates passed as input.");
             }
+
+            _rabbitTemplate.ConvertAndSend("Geometry.Inputs", JsonSerializer.Serialize(image));
 
             try
             {
@@ -167,7 +177,7 @@
 
         public PrintResults GetTrianglesPositions(ImagingDto imagingDto)
         {
-            if(imagingDto.IsAnyTriangleInvalid)
+            if (imagingDto.IsAnyTriangleInvalid)
             {
                 throw new ArgumentException("Invalid Triangle coordinates passed as input.");
             }
@@ -254,8 +264,9 @@
                 Point B;
                 Point C;
 
-                if (isUpper) {
-                    A = new Point(((int)columnLbound-1) * geometryDto.PixelSize, (row) * geometryDto.PixelSize);
+                if (isUpper)
+                {
+                    A = new Point(((int)columnLbound - 1) * geometryDto.PixelSize, (row) * geometryDto.PixelSize);
                     B = new Point((int)columnLbound * geometryDto.PixelSize, row * geometryDto.PixelSize);
                     C = new Point((int)columnUbound * geometryDto.PixelSize, (row + 1) * geometryDto.PixelSize);
                 }
